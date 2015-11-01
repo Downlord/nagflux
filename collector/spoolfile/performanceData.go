@@ -29,7 +29,7 @@ func (p *PerformanceData) String() string {
 //		p.command, p.fieldseperator,
 //		p.performanceLabel, p.fieldseperator,
 //		p.performanceType)
-	tableName := fmt.Sprintf(`%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s`, p.service, p.fieldseperator ,`command=`, p.command, p.fieldseperator ,`awsservice=`, p.awsservice, p.fieldseperatorp ,`awsserviceid=`, p.awsserviceid, p.fieldseperatorp ,`awsstage=`, p.awsstage, p.fieldseperator, `host=` , p.hostname )
+	tableName := fmt.Sprintf(`%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s`, p.service, p.fieldseperator ,`command=`, p.command, p.fieldseperator ,`awsservice=`, p.awsservice, p.fieldseperator ,`awsserviceid=`, p.awsserviceid, p.fieldseperatorp ,`awsstage=`, p.awsstage, p.fieldseperator, `host=` , p.hostname )
 	//if p.performanceType != "value" {
 	//	//tableName += fmt.Sprintf(`%s%s%s%s`, p.fieldseperator , p.performanceLabel, `=`, p.performanceType)
 	//	tableName += fmt.Sprintf(`%s%s%s`, p.fieldseperator , `perftype=`, p.performanceType)
