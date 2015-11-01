@@ -41,15 +41,11 @@ func (p *PerformanceData) String() string {
 	}
 
 	if len(p.mvals) > 0 {
-		tableName += fmt.Sprintf(` %s %s`, helper.PrintMapAsString(p.mvals, ",", "="), p.time)
+		tableName += fmt.Sprintf(` %s`, helper.PrintMapAsString(p.mvals, ",", "="))
 	}
-	
-	//tableName += fmt.Sprintf(`,%s=%s %s`, p.performanceLabel, p.value, p.time)
-	
-	//if p.performanceType == "value" {
-		tableName += fmt.Sprintf(` %s=%s %s`, p.performanceLabel, p.value, p.time)
-	//}else{
-		//tableName += fmt.Sprintf(` value=%s %s`, p.value, p.time)
-	//}
+
+   tableName += fmt.Sprintf(`,%s=%s`, p.performanceLabel, p.value)
+
+   tableName += fmt.Sprintf(`%s`, p.time)
 	return tableName
 }
