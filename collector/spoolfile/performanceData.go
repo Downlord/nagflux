@@ -35,7 +35,7 @@ func (p *PerformanceData) String() string {
 		tableName += fmt.Sprintf(`%s%s%s`, p.fieldseperator , `unit=`, p.unit)
 	}
 
-	p.tags["type"] = p.performanceType
+	//p.tags["type"] = p.performanceType
 	if len(p.tags) > 0 {
 		tableName += fmt.Sprintf(`,%s`, helper.PrintMapAsString(p.tags, ",", "="))
 	}
