@@ -145,7 +145,7 @@ func (w *NagiosSpoolfileWorker) performanceDataIterator(input map[string]string)
 				unit:             helper.SanitizeInfluxInput(value[3]),
 				fieldseperator:   w.fieldseperator,
 				tags:             map[string]string{},
-            mvals:            map[string]string{},
+            			mvals:            map[string]string{},
 			}
 			
 			for i, data := range value {
