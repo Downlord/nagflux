@@ -32,10 +32,12 @@ func (p *PerformanceData) String() string {
 	//	tableName += fmt.Sprintf(`%s%s%s`, p.fieldseperator , `perftype=`, p.performanceType)
 	//}
 	if p.unit != "" {
-		tableName += fmt.Sprintf(`%s%s%s`, p.fieldseperator , `unit=`, p.unit)
+//		tableName += fmt.Sprintf(`%s%s%s`, p.fieldseperator , `unit=`, p.unit)
+		p.tags["unit"] = p.unit
 	}
 
-	//p.tags["type"] = p.performanceType
+	p.tags["metric"] = p.performanceLabel
+	
 	if len(p.tags) > 0 {
 		tableName += fmt.Sprintf(`,%s`, helper.PrintMapAsString(p.tags, ",", "="))
 	}
@@ -44,7 +46,7 @@ func (p *PerformanceData) String() string {
 		tableName += fmt.Sprintf(` %s`, helper.PrintMapAsString(p.mvals, ",", "="))
 	}
 
-   tableName += fmt.Sprintf(`,%s=%s`, p.performanceLabel, p.value)
+   //tableName += fmt.Sprintf(`,%s=%s`, p.performanceLabel, p.value)
 
    tableName += fmt.Sprintf(` %s`, p.time)
 	return tableName
