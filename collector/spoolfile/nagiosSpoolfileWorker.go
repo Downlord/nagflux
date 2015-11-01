@@ -145,6 +145,111 @@ func (w *NagiosSpoolfileWorker) performanceDataIterator(input map[string]string)
 				unit:             helper.SanitizeInfluxInput(value[3]),
 				fieldseperator:   w.fieldseperator,
 				tags:             map[string]string{},
+            mvals:            map[string]string{},
+			}
+			
+			for i, data := range value {
+				if i > 1 && i != 3 && data != "" {
+					performanceType, err := indexToperformanceType(i)
+					if err != nil {
+						logging.GetLogger().Warn(err, value)
+						continue
+					}
+
+					//Add downtime tag if needed
+					if performanceType == "value" && w.livestatusCacheBuilder.IsServiceInDowntime(perf.hostname, perf.service, input[timet]) {
+						perf.tags["downtime"] = "1"
+					}
+               
+               
+					if performanceType == "warn" || performanceType == "crit" {
+						//Range handling
+						rangeRegex := regexp.MustCompile(`[\d\.\-]+`)
+						rangeHits := rangeRegex.FindAllStringSubmatch(data, -1)
+						if len(rangeHits) == 1 {
+							perf.value = helper.StringIntToStringFloat(rangeHits[0][0])
+                     perf.mvals[performanceType] = perf.value 
+							perf.performanceType = performanceType
+//							ch <- perf
+						} else if len(rangeHits) == 2 {
+							//If there is a range with no infinity as border, create two points
+							perf.performanceType = performanceType
+//							if strings.Contains(data, "@") {
+//								perf.tags["fill"] = "inner"
+//							} else {
+//								perf.tags["fill"] = "outer"
+//							}
+
+							for i, tag := range []string{"min", "max"} {
+								tmpPerf := perf
+								tmpPerf.tags = helper.CopyMap(perf.tags)
+//								tmpPerf.tags["type"] = tag
+								tmpPerf.value = helper.StringIntToStringFloat(rangeHits[i][0])
+                        perf.mvals[tag] = tmpPerf.value 
+//								ch <- tmpPerf
+							}
+						} else {
+							logging.GetLogger().Warn("Regexmatching went wrong", rangeHits)
+						}
+
+					} else {
+//						perf.tags["fill"] = "none"
+//						perf.tags["type"] = "value"
+						perf.value = helper.StringIntToStringFloat(data)
+                  perf.mvals["value"] = perf.value
+						perf.performanceType = performanceType
+//						ch <- perf
+					}
+				}
+            ch <- perf
+			}
+		}
+		close(ch)
+	}()
+	return ch
+}
+
+
+//Iterator to loop over generated perf data.
+func (w *NagiosSpoolfileWorker) old_performanceDataIterator(input map[string]string) <-chan PerformanceData {
+	ch := make(chan PerformanceData)
+	var typ string
+	if isHostPerformanceData(input) {
+		typ = hostType
+	} else if isServicePerformanceData(input) {
+		typ = serviceType
+	} else {
+		if len(input) > 1 {
+			logging.GetLogger().Info("Line does not match the scheme", input)
+		}
+		close(ch)
+		return ch
+	}
+        //logging.GetLogger().Info("XX INPUT XX", input)
+	currentHostname := helper.SanitizeInfluxInput(input[hostname])
+	currentCommand := w.searchAltCommand(input[typ+"PERFDATA"], input[typ+checkcommand])
+	currentTime := helper.CastStringTimeFromSToMs(input[timet])
+	currentService := ""
+	if typ != hostType {
+		currentService = helper.SanitizeInfluxInput(input[servicedesc])
+	}
+//        logging.GetLogger().Info("XX currentHostname XX ", currentHostname)
+//        logging.GetLogger().Info("XX currentCommand XX  ", currentCommand)
+//        logging.GetLogger().Info("XX currentTime XX     ", currentTime)
+//        logging.GetLogger().Info("XX currentService XX  ", currentService)
+	//currentCommand = strings.Replace(currentCommand, "check_mk-", "", -1)
+
+	go func() {
+		for _, value := range w.regexPerformancelable.FindAllStringSubmatch(input[typ+"PERFDATA"], -1) {
+			perf := PerformanceData{
+				hostname:         currentHostname,
+				service:          currentService,
+				command:          currentCommand,
+				time:             currentTime,
+				performanceLabel: helper.SanitizeInfluxInput(value[1]),
+				unit:             helper.SanitizeInfluxInput(value[3]),
+				fieldseperator:   w.fieldseperator,
+				tags:             map[string]string{},
 			}
 			
 			for i, data := range value {
