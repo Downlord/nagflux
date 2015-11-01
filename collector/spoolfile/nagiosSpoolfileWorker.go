@@ -185,7 +185,7 @@ func (w *NagiosSpoolfileWorker) performanceDataIterator(input map[string]string)
 								tmpPerf.tags = helper.CopyMap(perf.tags)
 //								tmpPerf.tags["type"] = tag
 								tmpPerf.value = helper.StringIntToStringFloat(rangeHits[i][0])
-                        perf.mvals[tag] = tmpPerf.value 
+                                                                perf.mvals[tag] = tmpPerf.value 
 //								ch <- tmpPerf
 							}
 						} else {
@@ -196,13 +196,13 @@ func (w *NagiosSpoolfileWorker) performanceDataIterator(input map[string]string)
 //						perf.tags["fill"] = "none"
 //						perf.tags["type"] = "value"
 						perf.value = helper.StringIntToStringFloat(data)
-                  perf.mvals["value"] = perf.value
+                                                perf.mvals["value"] = perf.value
 						perf.performanceType = performanceType
 //						ch <- perf
 					}
 				}
-            ch <- perf
 			}
+                        ch <- perf
 		}
 		close(ch)
 	}()
