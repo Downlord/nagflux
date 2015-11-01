@@ -46,6 +46,6 @@ func (p *PerformanceData) String() string {
 
    tableName += fmt.Sprintf(`,%s=%s`, p.performanceLabel, p.value)
 
-   tableName += fmt.Sprintf(`%s`, p.time)
+   tableName += fmt.Sprintf(` %s`, p.time)
 	return tableName
 }
