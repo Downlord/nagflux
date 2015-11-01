@@ -146,16 +146,16 @@ func (w *NagiosSpoolfileWorker) performanceDataIterator(input map[string]string)
 			perf := PerformanceData{
 				hostname:         currentHostname,
 				service:          currentService,
-				awsStage:         awsStage,
-				awsService:       awsService,
-				awsServiceID:     awsServiceID,
+				awsstage:         awsStage,
+				awsservice:       awsService,
+				awsserviceid:     awsServiceID,
 				command:          currentCommand,
 				time:             currentTime,
 				performanceLabel: helper.SanitizeInfluxInput(value[1]),
 				unit:             helper.SanitizeInfluxInput(value[3]),
 				fieldseperator:   w.fieldseperator,
 				tags:             map[string]string{},
-            			mvals:            map[string]string{},
+            mvals:            map[string]string{},
 			}
 			
 			for i, data := range value {
