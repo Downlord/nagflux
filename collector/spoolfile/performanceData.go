@@ -16,6 +16,7 @@ type PerformanceData struct {
 	value            string
 	fieldseperator   string
 	tags             map[string]string
+	mvals            map[string]string
 }
 
 func (p *PerformanceData) String() string {
@@ -39,6 +40,12 @@ func (p *PerformanceData) String() string {
 		tableName += fmt.Sprintf(`,%s`, helper.PrintMapAsString(p.tags, ",", "="))
 	}
 
+	if len(p.mvals) > 0 {
+		tableName += fmt.Sprintf(` %s`, helper.PrintMapAsString(p.mvals, ",", "="))
+	}
+	
+	tableName += fmt.Sprintf(`,%s=%s %s`, p.performanceLabel, p.value, p.time)
+	
 	//if p.performanceType == "value" {
 		tableName += fmt.Sprintf(` %s=%s %s`, p.performanceLabel, p.value, p.time)
 	//}else{
