@@ -11,6 +11,7 @@ type PerformanceData struct {
 	awsstage         string
 	awsservice       string
 	awsserviceid     string
+	awsinstanceid    string
 	command          string
 	performanceLabel string
 	performanceType  string
@@ -30,7 +31,7 @@ func (p *PerformanceData) String() string {
 //		p.performanceLabel, p.fieldseperator,
 //		p.performanceType)
 	//tableName := fmt.Sprintf(`%s%s%s%s%s%s%s`, p.service, p.fieldseperator ,`command=`, p.command, p.fieldseperator , `host=` , p.hostname )
-	tableName := fmt.Sprintf(`%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s`, p.service, p.fieldseperator ,`command=`, p.command, p.fieldseperator ,`awsservice=`, p.awsservice, p.fieldseperator ,`awsserviceid=`, p.awsserviceid, p.fieldseperator ,`awsstage=`, p.awsstage, p.fieldseperator, `host=` , p.hostname )
+	tableName := fmt.Sprintf(`%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s`, p.service, p.fieldseperator ,`command=`, p.command, p.fieldseperator ,`awsinstanceid=`, p.awsinstanceid, p.fieldseperator ,`awsservice=`, p.awsservice, p.fieldseperator ,`awsserviceid=`, p.awsserviceid, p.fieldseperator ,`awsstage=`, p.awsstage, p.fieldseperator, `host=` , p.hostname )
 	//if p.performanceType != "value" {
 	//	//tableName += fmt.Sprintf(`%s%s%s%s`, p.fieldseperator , p.performanceLabel, `=`, p.performanceType)
 	//	tableName += fmt.Sprintf(`%s%s%s`, p.fieldseperator , `perftype=`, p.performanceType)
