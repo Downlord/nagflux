@@ -41,7 +41,7 @@ const servicedesc string = "SERVICEDESC"
 const awsstage string = "AWSSTAGE"
 const awsservice string = "AWSSERVICE"
 const awsserviceid string = "AWSSERVICEID"
-
+const awsinstanceid string = "AWSINSTANCEID"
 //Generates a worker and starts it.
 func NagiosSpoolfileWorkerGenerator(jobs chan string, results chan interface{}, fieldseperator string, livestatusCacheBuilder *livestatus.LivestatusCacheBuilder) func() *NagiosSpoolfileWorker {
 	workerId := 0
@@ -128,6 +128,7 @@ func (w *NagiosSpoolfileWorker) performanceDataIterator(input map[string]string)
         awsStage := helper.SanitizeInfluxInput(input[awsstage])
         awsService := helper.SanitizeInfluxInput(input[awsservice])
         awsServiceID := helper.SanitizeInfluxInput(input[awsserviceid])
+        awsInstanceID := helper.SanitizeInfluxInput(input[awsinstanceid])
 	currentHostname := helper.SanitizeInfluxInput(input[hostname])
 	currentCommand := w.searchAltCommand(input[typ+"PERFDATA"], input[typ+checkcommand])
 	currentTime := helper.CastStringTimeFromSToMs(input[timet])
@@ -149,6 +150,7 @@ func (w *NagiosSpoolfileWorker) performanceDataIterator(input map[string]string)
 				awsstage:         awsStage,
 				awsservice:       awsService,
 				awsserviceid:     awsServiceID,
+				awsinstanceid:    awsInstanceID,
 				command:          currentCommand,
 				time:             currentTime,
 				performanceLabel: helper.SanitizeInfluxInput(value[1]),
