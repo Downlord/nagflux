@@ -27,7 +27,7 @@ func (p *PerformanceData) String() string {
 	if p.awsinstanceid == "" {
 		p.awsinstanceid = "empty"
 	}
-	tableName := fmt.Sprintf(`%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s`, p.service, p.fieldseperator ,`command=`, p.command, p.fieldseperator ,`awsinstanceid=`, p.awsinstanceid, p.fieldseperator ,`awsservice=`, p.awsservice, p.fieldseperator ,`awsserviceid=`, p.awsserviceid, p.fieldseperator ,`awsstage=`, p.awsstage, p.fieldseperator, `host=` , p.hostname )
+	tableName := fmt.Sprintf(`%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s`, p.service, p.fieldseperator ,`command=`, p.command, p.fieldseperator ,`awsinstanceid=`, p.awsinstanceid, p.fieldseperator ,`awsservice=`, p.awsservice, p.fieldseperator ,`awsserviceid=`, p.awsserviceid, p.fieldseperator ,`awsstage=`, p.awsstage, p.fieldseperator, `host=` , p.hostname )
 	if p.unit != "" {
 		p.tags["unit"] = p.unit
 	}
